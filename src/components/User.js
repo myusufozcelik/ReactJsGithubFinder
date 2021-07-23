@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React, { Component } from "react";
 
 class User extends Component {
@@ -6,7 +7,7 @@ class User extends Component {
   }
   render() {
      
-    const { login, id, avatar_url, html_url } = this.props.user;
+    const { login, avatar_url, html_url } = this.props.user;
     return (
     
            <div className="col-md-4 col-sm-6 col-lg-3">
@@ -14,7 +15,7 @@ class User extends Component {
               <img src={avatar_url} alt="" className="img-fluid" />
               <div className="card-body">
                 <h5 className="card-title">{login}</h5>
-                <a target="blank" href={html_url} className="btn btn-primary btn-sm">Go Profile</a>
+                <Link to={`/user/${login}`}  className="btn btn-primary btn-sm">Go Profile</Link>
               </div>
             </div>
             </div>
