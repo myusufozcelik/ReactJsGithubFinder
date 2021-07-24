@@ -1,64 +1,54 @@
-import React, { Component } from "react";
+import React, { useContext, useState } from "react";
+import GithubContext from "../context/githubContext";
 
-export class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.state = {
-      keyword: "",
-    };
-  }
+const Search = ({ setAlert, showClearButton, clearUsers }) => {
+  const [keyword, setKeyword] = useState("");
 
-  onChange(e) {
+  const githubContext = useContext(GithubContext); //searchUsers a erişebilmek için
+
+  const onChange = (e) => {
     // metod içinde this özelliğini kaybettiği için yukarıda bind ettik
-    this.setState({
-      keyword: e.target.value,
-    });
-  }
+    setKeyword(e.target.value);
+  };
 
-  onSubmit(e) {
+  const onSubmit = (e) => {
     e.preventDefault(); // yenilenmesini engelledik
-    if (this.state.keyword === "") {
+    if (keyword === "") {
       // keyword yoksa
-      this.props.setAlert("Please, enter a keyword.", "danger");
+      setAlert("Please, enter a keyword.", "danger");
     } else {
-      this.props.searchUsers(this.state.keyword); // propstan searchUsersa atadık
-      this.setState({
-        keyword: "",
-      });
+      githubContext.searchUsers(keyword); // propstan searchUsersa atadık
+      setKeyword("");
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className="container my-3">
-        <form onSubmit={this.onSubmit}>
-          <div className="input-group">
-            <input
-              type="text"
-              value={this.state.keyword}
-              onChange={this.onChange}
-              className="form-control"
-            />
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-primary">
-                Search
-              </button>
-            </div>
+  return (
+    <div className="container my-3">
+      <form onSubmit={onSubmit}>
+        <div className="input-group">
+          <input
+            type="text"
+            value={keyword}
+            onChange={onChange}
+            className="form-control"
+          />
+          <div className="input-group-append">
+            <button type="submit" className="btn btn-primary">
+              Search
+            </button>
           </div>
-        </form>
-        {this.props.showClearButton && (
-          <button
-            onClick={this.props.clearUsers}
-            className="btn btn-secondary btn-sm btn-block mt-2"
-          >
-            Clear Results
-          </button>
-        )}
-      </div>
-    );
-  }
-}
+        </div>
+      </form>
+      {showClearButton && (
+        <button
+          onClick={clearUsers}
+          className="btn btn-secondary btn-sm btn-block mt-2"
+        >
+          Clear Results
+        </button>
+      )}
+    </div>
+  );
+};
 
 export default Search;
