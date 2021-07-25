@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
-import GithubContext from "../context/githubContext";
+import AlertContext from "../context/alert/alertContext";
+import GithubContext from "../context/github/githubContext";
 
-const Search = ({ setAlert, showClearButton, clearUsers }) => {
+const Search = () => {
   const [keyword, setKeyword] = useState("");
 
-  const githubContext = useContext(GithubContext); //searchUsers a erişebilmek için
+  const { searchUsers, clearUsers, users } = useContext(GithubContext); //searchUsers a erişebilmek için
+  const { setAlert } = useContext(AlertContext);
 
   const onChange = (e) => {
     // metod içinde this özelliğini kaybettiği için yukarıda bind ettik
@@ -17,7 +19,7 @@ const Search = ({ setAlert, showClearButton, clearUsers }) => {
       // keyword yoksa
       setAlert("Please, enter a keyword.", "danger");
     } else {
-      githubContext.searchUsers(keyword); // propstan searchUsersa atadık
+      searchUsers(keyword); // propstan searchUsersa atadık
       setKeyword("");
     }
   };
@@ -39,7 +41,7 @@ const Search = ({ setAlert, showClearButton, clearUsers }) => {
           </div>
         </div>
       </form>
-      {showClearButton && (
+      {users.length > 0 && (
         <button
           onClick={clearUsers}
           className="btn btn-secondary btn-sm btn-block mt-2"

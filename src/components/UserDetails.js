@@ -1,16 +1,12 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useContext, useEffect } from "react";
+import GithubContext from "../context/github/githubContext";
 import { Loading } from "./Loading";
 import Repos from "./Repos";
 
-const UserDetails = ({
-  getUser,
-  getUserRepos,
-  match,
-  loading,
-  repos,
-  user,
-}) => {
-  
+const UserDetails = ({ match }) => {
+  const { getUser, loading, user, repos, getUserRepos } =
+    useContext(GithubContext);
+
   useEffect(() => {
     const { login } = match.params;
     // user details componenti çalıştığı anda buradaki işlemler uygulansın
